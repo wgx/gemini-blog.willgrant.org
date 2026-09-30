@@ -74,7 +74,7 @@ fn generate_self_signed(
         .context("generating self-signed certificate")?;
 
     let cert_der = CertificateDer::from(generated.cert.der().to_vec());
-    let key_der = PrivateKeyDer::try_from(generated.signing_key.serialize_der())
+    let key_der = PrivateKeyDer::try_from(generated.key_pair.serialize_der())
         .map_err(|e| anyhow::anyhow!("encoding generated private key: {e}"))?;
 
     Ok((vec![cert_der], key_der))

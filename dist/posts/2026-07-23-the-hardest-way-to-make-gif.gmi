@@ -1,0 +1,104 @@
+# The Hardest Way to Make a GIF
+
+Published: 2026-07-23
+
+Everyone loves a good GIF, and my favourite (of all time) is this one (circa 2015):
+=> https://knowyourmeme.com/memes/elmo-rise this one
+
+=> https://blog.willgrant.org/images/hgif-elmo.gif Elmo burns it all
+
+Let’s make a GIF in the hardest way possible.
+
+Why? It’s pointless, but some pointless things are just fun to do.
+
+## Step 1: Acquire photons
+
+For this step I’ll be using the Lomo ActionSampler , a plastic camera made in China by a series of anonymous unknown factories. It’s been branded as many different things over the years, including as the Revolver Selby in 1991 , so it’s a design that’s at least 35 years old.
+=> https://camera-wiki.org/wiki/Lomographic_ActionSampler ActionSampler
+=> https://collection-appareils.fr/x/html/camera-12261-ActionSampler_.html Revolver Selby in 1991
+
+=> https://blog.willgrant.org/images/hgif-actionsampler.jpg Battered ActionSampler Camera
+
+The camera uses a unique clockwork spring-powered mechanism to rotate a circular shutter over 4 different lenses, at a speed of around 1/250s per frame. This means, if you’re lucky, you can capture 1 second of action at a glorious 4 frames per second.
+
+Because you never really know how the photos will turn out, I’ll shoot a 36 exposure roll of Lucky SHD 400 film, and we’ll see what we get. Now that our photos are captured on China’s finest cheapest black and white film, we need to make them visible.
+
+=> https://blog.willgrant.org/images/hgif-actionsampler-lens-slowmotion.gif Lomo ActionSampler shutter mechanism in slow motion
+
+## Step 2: Develop film
+
+I could send the film off to a lab for developing and scanning, but this is the hardest way to make a GIF. I develop film at home so luckily I have all the requisite parts:
+
+* Developer tank and reel
+* Ilford Ilfosol 3 developer
+* Ilford Rapidfix fixer
+* A dark bag
+* Jugs, thermometer and other assorted accessories
+
+=> https://blog.willgrant.org/images/hgif-developing.jpg Highly professional film developing set-up
+
+By a combination of luck and limited skill, it worked! We have developed film, each frame containing 4 images captured at 4 frames per second.
+
+=> https://blog.willgrant.org/images/hgif-developed-film.jpg Actual images have been produced
+
+## Step 3: Scan images
+
+I don’t have a fancy film scanner, so for this I’ll be mounting each frame on an LED light panel then taking a photo with a digital camera on a tripod, with lots of light and a small aperture to try to get the best detail possible. I’ll shoot the frames in RAW which will give me some flexibility in the software later to expose them more correctly. This is similar to the digital intermediary phase in “real” filmmaking.
+=> https://en.wikipedia.org/wiki/Raw_image_format RAW
+=> https://en.wikipedia.org/wiki/Digital_intermediate digital intermediary
+
+I loaded the RAW files into Affinity and eyeballed the exposure to hopefully get useful images back. They’re inverted of course, so a quick cmd+i inverts them the right way round.
+=> https://www.affinity.studio/ Affinity
+
+=> https://blog.willgrant.org/images/hgif-actionsampler-1frame.jpg One ActionSampler frame with 4 images
+
+## Step 4: Crop frames
+
+The alignment of each 4 frames within the 35mm frame is not exact (this is a plastic camera from the 1990s after all). In fact frames 1 and 2 are a different width to frames 3 and 4, so I’ll need to crop each frame, then align them as layers manually in Affinity. Making the frames 50% transparency helps as a rudimentary form of onion skinning .
+=> https://en.wikipedia.org/wiki/Onion_skinning onion skinning
+
+=> https://blog.willgrant.org/images/hgif-affinity.mp4 video
+
+Now we export the frames as PNGs, and number them by frame order.
+
+## Step 5: Align frames and Gif-ify
+
+Using imagemagick on the command line I was able to combine the images into a GIF. I went for a “ping pong” animation style, just to make the GIF last a little longer and give a better sense of the motion.
+=> https://github.com/imagemagick/imagemagick imagemagick
+
+```
+magick -delay 25 -loop 0 1.png 2.png 3.png 4.png 3.png 2.png animated.gif
+```
+
+Delay 25 means 25/100ths of a second, or 4fps - making it more lifelike to the real world it was captured from.
+
+Naturally with 4fps this isn’t exactly like watching a Pixar movie, so I created some tweens by blending frames at 50% opacity each using:
+=> https://en.wikipedia.org/wiki/Inbetweening tweens
+
+```
+magick 1.png 2.png -define compose:args=50,50 -compose blend -composite 1-2-tween.png
+```
+
+With these tween frames as part of the animation it appears much smoother.
+
+And there you have it! A looping animated GIF, acquired from the real world on 35mm film. Next project: do it with IMAX. ;)
+
+Here are some of my favourites:
+
+=> https://blog.willgrant.org/images/hgif-dog.gif 35mm GIF Animation of a dog
+
+=> https://blog.willgrant.org/images/hgif-ppl.gif 35mm GIF Animation of a some people
+
+=> https://blog.willgrant.org/images/hgif-claw.gif 35mm GIF Animation of a claw machine
+
+=> https://blog.willgrant.org/images/hgif-bingo.gif 35mm GIF Animation of a bingo game
+
+=> https://blog.willgrant.org/images/hgif-plants.gif 35mm GIF Animation of a some plants
+
+=> https://blog.willgrant.org/images/hgif-train.gif 35mm GIF Animation of a mini train
+
+=> https://blog.willgrant.org/images/hgif-shopmo.gif 35mm GIF Animation of a ShopMobility Scooter
+
+=> https://blog.willgrant.org/images/hgif-walk.gif 35mm GIF Animation of people walking
+
+=> /index.gmi Back to all posts

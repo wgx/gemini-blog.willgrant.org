@@ -1,4 +1,95 @@
 {
   "version": 1,
-  "posts": {}
+  "posts": {
+    "https://blog.willgrant.org/2023/11/27/strategies-for-successful-user-interface-migrations": {
+      "id": "https://blog.willgrant.org/2023/11/27/strategies-for-successful-user-interface-migrations",
+      "slug": "2023-11-27-strategies-for-successful-user-interface-migrations",
+      "title": "Strategies for Successful User Interface Migrations",
+      "source_url": "https://blog.willgrant.org/2023/11/27/strategies-for-successful-user-interface-migrations.html",
+      "updated": "2023-11-27T00:11:04+00:00",
+      "published": "2023-11-27T00:11:04+00:00",
+      "gmi_path": "posts/2023-11-27-strategies-for-successful-user-interface-migrations.gmi"
+    },
+    "https://blog.willgrant.org/2023/12/13/ux-of-unretirement-digital-products-workplaces": {
+      "id": "https://blog.willgrant.org/2023/12/13/ux-of-unretirement-digital-products-workplaces",
+      "slug": "2023-12-13-ux-of-unretirement-digital-products-workplaces",
+      "title": "The UX of Unretirement: Implications for User Experience (UX) in Digital Products and Workplaces",
+      "source_url": "https://blog.willgrant.org/2023/12/13/ux-of-unretirement-digital-products-workplaces.html",
+      "updated": "2023-12-13T00:13:44+00:00",
+      "published": "2023-12-13T00:13:44+00:00",
+      "gmi_path": "posts/2023-12-13-ux-of-unretirement-digital-products-workplaces.gmi"
+    },
+    "https://blog.willgrant.org/2024/03/28/ui-ux-cx-service-design-defined-with-analogies": {
+      "id": "https://blog.willgrant.org/2024/03/28/ui-ux-cx-service-design-defined-with-analogies",
+      "slug": "2024-03-28-ui-ux-cx-service-design-defined-with-analogies",
+      "title": "UI, UX, CX, Service Design, defined with analogies",
+      "source_url": "https://blog.willgrant.org/2024/03/28/ui-ux-cx-service-design-defined-with-analogies.html",
+      "updated": "2024-03-28T09:11:04+00:00",
+      "published": "2024-03-28T09:11:04+00:00",
+      "gmi_path": "posts/2024-03-28-ui-ux-cx-service-design-defined-with-analogies.gmi"
+    },
+    "https://blog.willgrant.org/2024/04/09/stretching-the-user-centered-design-going-to-the-gym-metaphor-to-breaking-point": {
+      "id": "https://blog.willgrant.org/2024/04/09/stretching-the-user-centered-design-going-to-the-gym-metaphor-to-breaking-point",
+      "slug": "2024-04-09-stretching-the-user-centered-design-going-to-the-gym-metaphor-to-breaking-point",
+      "title": "Stretching the User-Centered Design / Going to the Gym Metaphor to Breaking Point",
+      "source_url": "https://blog.willgrant.org/2024/04/09/stretching-the-user-centered-design-going-to-the-gym-metaphor-to-breaking-point.html",
+      "updated": "2024-04-09T00:00:00+00:00",
+      "published": "2024-04-09T00:00:00+00:00",
+      "gmi_path": "posts/2024-04-09-stretching-the-user-centered-design-going-to-the-gym-metaphor-to-breaking-point.gmi"
+    },
+    "https://blog.willgrant.org/2025/01/01/are-you-planning-on-ai": {
+      "id": "https://blog.willgrant.org/2025/01/01/are-you-planning-on-ai",
+      "slug": "2025-01-01-are-you-planning-on-ai",
+      "title": "Are you planning to pre-emptively integrate AI-powered features into your software?",
+      "source_url": "https://blog.willgrant.org/2025/01/01/are-you-planning-on-ai.html",
+      "updated": "2025-01-01T00:00:00+00:00",
+      "published": "2025-01-01T00:00:00+00:00",
+      "gmi_path": "posts/2025-01-01-are-you-planning-on-ai.gmi"
+    },
+    "https://blog.willgrant.org/2025/01/02/humblebrag": {
+      "id": "https://blog.willgrant.org/2025/01/02/humblebrag",
+      "slug": "2025-01-02-humblebrag",
+      "title": "This is a complete #humblebrag but I’m ok with that",
+      "source_url": "https://blog.willgrant.org/2025/01/02/humblebrag.html",
+      "updated": "2025-01-02T00:00:00+00:00",
+      "published": "2025-01-02T00:00:00+00:00",
+      "gmi_path": "posts/2025-01-02-humblebrag.gmi"
+    },
+    "https://blog.willgrant.org/2025/01/05/stopify-my-own-diy-music-streaming-service": {
+      "id": "https://blog.willgrant.org/2025/01/05/stopify-my-own-diy-music-streaming-service",
+      "slug": "2025-01-05-stopify-my-own-diy-music-streaming-service",
+      "title": "Stopify - my own DIY music streaming service",
+      "source_url": "https://blog.willgrant.org/2025/01/05/stopify-my-own-diy-music-streaming-service.html",
+      "updated": "2025-01-05T00:00:00+00:00",
+      "published": "2025-01-05T00:00:00+00:00",
+      "gmi_path": "posts/2025-01-05-stopify-my-own-diy-music-streaming-service.gmi"
+    },
+    "https://blog.willgrant.org/2025/02/06/how-software-engineering-leaders-can-harness-generative-ai-to-enhance-user-experience": {
+      "id": "https://blog.willgrant.org/2025/02/06/how-software-engineering-leaders-can-harness-generative-ai-to-enhance-user-experience",
+      "slug": "2025-02-06-how-software-engineering-leaders-can-harness-generative-ai-to-enhance-user-experience",
+      "title": "How Software Engineering Leaders Can Harness Generative AI to Enhance User Experience",
+      "source_url": "https://blog.willgrant.org/2025/02/06/how-software-engineering-leaders-can-harness-generative-ai-to-enhance-user-experience.html",
+      "updated": "2025-02-06T00:00:00+00:00",
+      "published": "2025-02-06T00:00:00+00:00",
+      "gmi_path": "posts/2025-02-06-how-software-engineering-leaders-can-harness-generative-ai-to-enhance-user-experience.gmi"
+    },
+    "https://blog.willgrant.org/2025/03/26/how-to-get-your-first-job-in-ux": {
+      "id": "https://blog.willgrant.org/2025/03/26/how-to-get-your-first-job-in-ux",
+      "slug": "2025-03-26-how-to-get-your-first-job-in-ux",
+      "title": "How to Get Your First Job in UX: A Guide",
+      "source_url": "https://blog.willgrant.org/2025/03/26/how-to-get-your-first-job-in-ux.html",
+      "updated": "2025-03-26T09:13:00+00:00",
+      "published": "2025-03-26T09:13:00+00:00",
+      "gmi_path": "posts/2025-03-26-how-to-get-your-first-job-in-ux.gmi"
+    },
+    "https://blog.willgrant.org/2026/07/23/the-hardest-way-to-make-gif": {
+      "id": "https://blog.willgrant.org/2026/07/23/the-hardest-way-to-make-gif",
+      "slug": "2026-07-23-the-hardest-way-to-make-gif",
+      "title": "The Hardest Way to Make a GIF",
+      "source_url": "https://blog.willgrant.org/2026/07/23/the-hardest-way-to-make-gif.html",
+      "updated": "2026-07-23T00:00:00+00:00",
+      "published": "2026-07-23T00:00:00+00:00",
+      "gmi_path": "posts/2026-07-23-the-hardest-way-to-make-gif.gmi"
+    }
+  }
 }
