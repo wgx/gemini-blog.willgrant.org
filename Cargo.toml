@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = ["cli", "server"]
+
+# Keep binaries small and fast; both crates inherit this profile.
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

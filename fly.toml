@@ -1,0 +1,34 @@
+# Fly.io configuration for the Gemini mirror server.
+#
+# Gemini's TLS is terminated *inside* the Rust binary (see server/src/tls.rs),
+# not by Fly's edge - so `handlers = []` below is deliberate: it configures
+# a raw TCP pass-through rather than Fly's usual HTTP/TLS proxying, which
+# would otherwise try (and fail) to speak HTTP to a Gemini client.
+#
+# Replace `app` with your own app name (must be globally unique on Fly)
+# and `primary_region` with whichever Fly region is closest to your
+# readers before running `fly launch` / `fly deploy`.
+app = "willgrant-gemini-mirror"
+primary_region = "lhr"
+
+[build]
+
+[[services]]
+  internal_port = 1965
+  protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[services.ports]]
+    port = 1965
+    handlers = []
+
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "4s"
+    grace_period = "10s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
