@@ -1,7 +1,7 @@
 mod tls;
 
 use anyhow::{Context, Result};
-use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
+use std::net::{Ipv6Addr, SocketAddr};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -40,14 +40,10 @@ async fn main() -> Result<()> {
     let tls_config = tls::build_server_config()?;
     let acceptor = TlsAcceptor::from(tls_config);
 
-    // Fly.io's network stack is dual-stack, but binding explicitly to
-    // both families (rather than relying on a single dual-stack [::]
-    // socket, whose behavior varies by platform/kernel config) is the
-    // most portable way to satisfy "listen on IPv4 and IPv6".
-    let v4 = TcpListener::bind(SocketAddr::from((Ipv4Addr::UNSPECIFIED, port)))
-        .await
-        .with_context(|| format!("binding 0.0.0.0:{port}"))?;
-    let v6 = TcpListener::bind(SocketAddr::from((Ipv6Addr::UNSPECIFIED, port)))
+    // Use one IPv6 wildcard socket with IPv4-mapped connections enabled.
+    // Separate wildcard sockets collide on Linux because [::] is dual-stack
+    // by default and already covers 0.0.0.0.
+    let listener = TcpListener::bind(SocketAddr::from((Ipv6Addr::UNSPECIFIED, port)))
         .await
         .with_context(|| format!("binding [::]:{port}"))?;
 
@@ -56,12 +52,10 @@ async fn main() -> Result<()> {
         content_dir.display()
     );
 
-    let v4_task = accept_loop(v4, acceptor.clone(), content_dir.clone());
-    let v6_task = accept_loop(v6, acceptor, content_dir);
+    let accept_task = accept_loop(listener, acceptor, content_dir);
 
     tokio::select! {
-        res = v4_task => res?,
-        res = v6_task => res?,
+        res = accept_task => res?,
         _ = tokio::signal::ctrl_c() => {
             println!("shutting down");
         }
