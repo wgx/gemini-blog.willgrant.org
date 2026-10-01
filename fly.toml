@@ -8,7 +8,7 @@
 # Replace `app` with your own app name (must be globally unique on Fly)
 # and `primary_region` with whichever Fly region is closest to your
 # readers before running `fly launch` / `fly deploy`.
-app = "willgrant-gemini-mirror"
+app = "gemini-blog-willgrant-org"
 primary_region = "lhr"
 
 [build]
