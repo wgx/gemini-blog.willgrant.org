@@ -10,18 +10,18 @@ GitHub Actions (schedule/manual)
    │
    ├─▶ cli  ── fetches feed.xml, diffs against manifest.json,
    │           converts new/changed posts' HTML to Gemtext,
-   │           writes dist/posts/*.gmi + dist/index.gmi
+  │           writes blog/posts/*.gmi + blog/index.gmi
    │
-   ├─▶ git commit + push  (manifest.json + dist/ generated files)
+  ├─▶ git commit + push  (manifest.json + generated blog/ files)
    │
-   └─▶ fly deploy  ── builds the Docker image (just the `server`
-                       binary + the committed dist/ directory) and
-                       ships it to a Fly.io machine
+  └─▶ fly deploy  ── builds the Docker image (the generic `server`
+                binary + blog/ content) and ships it to Fly.io
                               │
                               ▼
                     server (always running on Fly, sleeps when idle)
                     speaks the Gemini protocol over TLS on :1965,
-                    serves dist/*.gmi straight off disk
+                    serves files from its content root; blog/ is at
+                    gemini://<host>/blog/
 ```
 
 Two crates, one workspace:
@@ -33,9 +33,9 @@ Two crates, one workspace:
   tables, images).
 * **`server`** - the only thing that actually runs on Fly.io. A small
   `tokio` + `rustls` TCP server that terminates Gemini's TLS itself and
-  serves whatever is in `dist/` from disk. It never fetches anything at
-  runtime, which is what makes it compatible with Fly's
-  scale-to-zero/Firecracker model - there's no cache to warm and no
+  serves files from `CONTENT_DIR` (the Docker image uses `/app`) from disk.
+  It never fetches anything at runtime, which keeps it compatible with
+  Fly's scale-to-zero/Firecracker model - there's no cache to warm and no
   state to lose when a machine sleeps.
 
 Because this specific blog's `feed.xml` is an Atom feed with the full
@@ -45,7 +45,7 @@ code still supports feeds that only ship summaries: `feed.rs` falls back
 to fetching `source_url` directly for those.)
 
 Images and other assets referenced by posts (e.g. `<img src="/images/…">`)
-are **not** mirrored into `/dist` - only text is. Their links are
+are **not** mirrored into `/blog` - only text is. Their links are
 rewritten to absolute URLs pointing back at the original blog
 (`https://blog.willgrant.org/images/…`) so they still resolve for anyone
 reading the mirror.
@@ -61,17 +61,19 @@ Generate the mirror locally:
 cargo run -p cli -- \
   --feed-url https://blog.willgrant.org/feed.xml \
   --manifest manifest.json \
-  --out dist \
+  --out blog \
+  --url-prefix /blog \
+  --force \
   --site-title "Blog posts by Will Grant (Gemini mirror)"
 ```
 
 Run the server against that output:
 
 ```sh
-DIST_DIR=dist LISTEN_PORT=1965 cargo run -p server
+CONTENT_DIR=. LISTEN_PORT=1965 cargo run -p server
 ```
 
-Then point any Gemini client at `gemini://localhost/` (e.g. [Lagrange](
+Then point any Gemini client at `gemini://localhost/blog/` (e.g. [Lagrange](
 https://gemini.circumlunar.space/clients.html)). The server generates a
 throwaway self-signed certificate on every start unless
 `GEMINI_TLS_CERT_PEM`/`GEMINI_TLS_KEY_PEM` are set (see
@@ -92,7 +94,7 @@ cargo test -p cli
    itself - instead, create a deploy token (`fly tokens create deploy`)
    and add it as the `FLY_API_TOKEN` secret on the **GitHub repo**
    (Settings → Secrets and variables → Actions), for
-   `.github/workflows/sync-and-deploy.yml` to use.
+    `.github/workflows/sync-and-deploy.yml` to use.
 3. Optional but recommended: generate a real cert/key pair once (so the
    Gemini TLS certificate is stable across restarts, rather than a fresh
    self-signed one every deploy) and store them as `fly secrets set
@@ -116,6 +118,6 @@ cargo test -p cli
   a directory request without a trailing slash - it just 404s. Fine for
   this site's flat `posts/*.gmi` structure; worth revisiting if you add
   nested sections later.
-* The GitHub Actions workflow commits straight to the default branch. If
-  the repo has required status checks on that branch, switch it to push
-  to a side branch and open/update a PR instead.
+* The GitHub Actions workflow commits generated Gemtext and the manifest
+  straight to `main`. If the repo has required status checks on that
+  branch, switch it to push to a side branch and open/update a PR instead.

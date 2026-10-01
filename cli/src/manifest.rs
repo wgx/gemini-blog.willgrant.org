@@ -24,7 +24,7 @@ pub struct PostRecord {
     pub updated: String,
     /// RFC 3339 timestamp of first publication, shown in the index.
     pub published: String,
-    /// Path of the generated Gemtext file, relative to the `/dist` root,
+    /// Path of the generated Gemtext file, relative to the output directory,
     /// e.g. `posts/2026-07-23-the-hardest-way-to-make-gif.gmi`.
     pub gmi_path: String,
 }

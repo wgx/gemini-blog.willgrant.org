@@ -1,0 +1,62 @@
+name: Sync blog to Gemini and deploy
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "manifest.json"
+      - "blog/**"
+      - "dist/**"
+
+concurrency:
+  group: gemini-blog-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Seed blog directory from the existing mirror
+        run: |
+          if [ ! -d blog ]; then
+            mkdir blog
+            cp -a dist/. blog/
+          fi
+
+      - name: Generate Gemtext
+        run: >-
+          cargo run --release -p cli --
+          --feed-url https://blog.willgrant.org/feed.xml
+          --manifest manifest.json
+          --out blog
+          --url-prefix /blog
+          --force
+          --site-title "Blog posts by Will Grant (Gemini mirror)"
+
+      - name: Commit generated content and manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add manifest.json blog/
+          if ! git diff --cached --quiet; then
+            git commit -m "Update generated Gemini blog"
+            git push
+          fi
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

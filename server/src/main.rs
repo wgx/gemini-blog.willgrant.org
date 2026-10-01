@@ -22,14 +22,20 @@ async fn main() -> Result<()> {
         .ok()
         .and_then(|v| v.parse().ok())
         .unwrap_or(1965);
-    let dist_dir: PathBuf = std::env::var("DIST_DIR").unwrap_or_else(|_| "dist".to_string()).into();
+    let content_dir: PathBuf = std::env::var("CONTENT_DIR")
+        .unwrap_or_else(|_| ".".to_string())
+        .into();
 
     anyhow::ensure!(
-        dist_dir.is_dir(),
-        "DIST_DIR '{}' does not exist or is not a directory",
-        dist_dir.display()
+        content_dir.is_dir(),
+        "CONTENT_DIR '{}' does not exist or is not a directory",
+        content_dir.display()
     );
-    let dist_dir = Arc::new(dist_dir.canonicalize().context("canonicalizing DIST_DIR")?);
+    let content_dir = Arc::new(
+        content_dir
+            .canonicalize()
+            .context("canonicalizing CONTENT_DIR")?,
+    );
 
     let tls_config = tls::build_server_config()?;
     let acceptor = TlsAcceptor::from(tls_config);
@@ -45,10 +51,13 @@ async fn main() -> Result<()> {
         .await
         .with_context(|| format!("binding [::]:{port}"))?;
 
-    println!("Gemini server listening on port {port} (IPv4 + IPv6), serving {}", dist_dir.display());
+    println!(
+        "Gemini server listening on port {port} (IPv4 + IPv6), serving {}",
+        content_dir.display()
+    );
 
-    let v4_task = accept_loop(v4, acceptor.clone(), dist_dir.clone());
-    let v6_task = accept_loop(v6, acceptor, dist_dir);
+    let v4_task = accept_loop(v4, acceptor.clone(), content_dir.clone());
+    let v6_task = accept_loop(v6, acceptor, content_dir);
 
     tokio::select! {
         res = v4_task => res?,
@@ -61,7 +70,11 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-async fn accept_loop(listener: TcpListener, acceptor: TlsAcceptor, dist_dir: Arc<PathBuf>) -> Result<()> {
+async fn accept_loop(
+    listener: TcpListener,
+    acceptor: TlsAcceptor,
+    content_dir: Arc<PathBuf>,
+) -> Result<()> {
     loop {
         let (socket, peer) = match listener.accept().await {
             Ok(pair) => pair,
@@ -71,9 +84,9 @@ async fn accept_loop(listener: TcpListener, acceptor: TlsAcceptor, dist_dir: Arc
             }
         };
         let acceptor = acceptor.clone();
-        let dist_dir = dist_dir.clone();
+        let content_dir = content_dir.clone();
         tokio::spawn(async move {
-            if let Err(e) = handle_connection(socket, acceptor, dist_dir).await {
+            if let Err(e) = handle_connection(socket, acceptor, content_dir).await {
                 eprintln!("connection from {peer} failed: {e}");
             }
         });
@@ -83,7 +96,7 @@ async fn accept_loop(listener: TcpListener, acceptor: TlsAcceptor, dist_dir: Arc
 async fn handle_connection(
     socket: tokio::net::TcpStream,
     acceptor: TlsAcceptor,
-    dist_dir: Arc<PathBuf>,
+    content_dir: Arc<PathBuf>,
 ) -> Result<()> {
     let mut stream = acceptor.accept(socket).await.context("TLS handshake failed")?;
 
@@ -95,7 +108,7 @@ async fn handle_connection(
         }
     };
 
-    let response = route(&request_line, &dist_dir).await;
+    let response = route(&request_line, &content_dir).await;
     match response {
         Response::Success { mime, body } => {
             stream
@@ -141,7 +154,7 @@ enum Response {
     Status { code: u16, meta: String },
 }
 
-async fn route(raw_url: &str, dist_dir: &Path) -> Response {
+async fn route(raw_url: &str, content_dir: &Path) -> Response {
     let parsed = match url::Url::parse(raw_url.trim()) {
         Ok(u) if u.scheme() == "gemini" => u,
         Ok(_) => return Response::Status { code: 59, meta: "Only the gemini:// scheme is supported".into() },
@@ -152,7 +165,7 @@ async fn route(raw_url: &str, dist_dir: &Path) -> Response {
         .decode_utf8_lossy()
         .to_string();
 
-    match resolve_path(dist_dir, &decoded_path) {
+    match resolve_path(content_dir, &decoded_path) {
         Some(file_path) => match tokio::fs::read(&file_path).await {
             Ok(body) => Response::Success { mime: mime_for(&file_path), body },
             Err(_) => Response::Status { code: 51, meta: "Not Found".into() },
@@ -161,10 +174,10 @@ async fn route(raw_url: &str, dist_dir: &Path) -> Response {
     }
 }
 
-/// Safely map a request path onto a file under `dist_dir`, refusing any
+/// Safely map a request path onto a file under `content_dir`, refusing any
 /// path that would escape it (e.g. via `..` segments) and falling back
 /// to `index.gmi` for a directory-style request.
-fn resolve_path(dist_dir: &Path, request_path: &str) -> Option<PathBuf> {
+fn resolve_path(content_dir: &Path, request_path: &str) -> Option<PathBuf> {
     let trimmed = request_path.trim_start_matches('/');
     let relative = if trimmed.is_empty() || trimmed.ends_with('/') {
         format!("{trimmed}index.gmi")
@@ -172,13 +185,13 @@ fn resolve_path(dist_dir: &Path, request_path: &str) -> Option<PathBuf> {
         trimmed.to_string()
     };
 
-    let candidate = dist_dir.join(&relative);
+    let candidate = content_dir.join(&relative);
 
     // Canonicalize and check the result is still inside dist_dir - the
     // one thing standing between a client and arbitrary file reads if a
     // `..` slipped through.
     let canonical = candidate.canonicalize().ok()?;
-    if canonical.starts_with(dist_dir) {
+    if canonical.starts_with(content_dir) {
         Some(canonical)
     } else {
         None

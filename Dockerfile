@@ -37,9 +37,9 @@ RUN apt-get update \
 
 WORKDIR /app
 COPY --from=builder /build/target/release/server ./server
-COPY dist ./dist
+COPY blog ./blog
 
-ENV DIST_DIR=/app/dist
+ENV CONTENT_DIR=/app
 ENV LISTEN_PORT=1965
 EXPOSE 1965/tcp
 

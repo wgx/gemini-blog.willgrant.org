@@ -23,10 +23,13 @@ struct Args {
     #[arg(long, default_value = "manifest.json")]
     manifest: PathBuf,
 
-    /// Output directory for generated .gmi files (the Gemini server's
-    /// document root).
-    #[arg(long, default_value = "dist")]
+    /// Output directory for generated .gmi files.
+    #[arg(long, default_value = "blog")]
     out: PathBuf,
+
+    /// URL path where the output directory is served.
+    #[arg(long, default_value = "/blog")]
+    url_prefix: String,
 
     /// Title used at the top of the generated index.gmi.
     #[arg(long, default_value = "Blog Mirror")]
@@ -42,6 +45,7 @@ struct Args {
 #[tokio::main]
 async fn main() -> Result<()> {
     let args = Args::parse();
+    let url_prefix = normalize_url_prefix(&args.url_prefix);
 
     let mut manifest = Manifest::load(&args.manifest)
         .with_context(|| format!("loading manifest from {}", args.manifest.display()))?;
@@ -88,7 +92,12 @@ async fn main() -> Result<()> {
         let gmi_relative = format!("posts/{post_slug}.gmi");
         let gmi_path = args.out.join(&gmi_relative);
 
-        let page = render_post_page(&entry.title, &entry.published.to_rfc3339(), &gemtext_body);
+        let page = render_post_page(
+            &entry.title,
+            &entry.published.to_rfc3339(),
+            &gemtext_body,
+            &url_prefix,
+        );
         std::fs::write(&gmi_path, page)
             .with_context(|| format!("writing {}", gmi_path.display()))?;
 
@@ -112,7 +121,7 @@ async fn main() -> Result<()> {
     // The index is cheap to regenerate and always needs to be, since a
     // brand-new post changes its contents even when every *other* post
     // was unchanged this run.
-    write_index(&args.out, &args.site_title, &manifest)?;
+    write_index(&args.out, &args.site_title, &manifest, &url_prefix)?;
 
     manifest.save(&args.manifest)?;
 
@@ -123,22 +132,47 @@ async fn main() -> Result<()> {
 /// Wrap a converted post body with a small header (title, publish date,
 /// a back-link to the index) and a footer back-link, so every page is
 /// navigable without relying on the client's history/back button.
-fn render_post_page(title: &str, published_rfc3339: &str, body: &str) -> String {
-    let date = published_rfc3339.split('T').next().unwrap_or(published_rfc3339);
+fn render_post_page(
+    title: &str,
+    published_rfc3339: &str,
+    body: &str,
+    url_prefix: &str,
+) -> String {
+    let date = published_rfc3339
+        .split('T')
+        .next()
+        .unwrap_or(published_rfc3339);
     format!(
-        "# {title}\n\nPublished: {date}\n\n{body}\n=> /index.gmi Back to all posts\n"
+        "# {title}\n\nPublished: {date}\n\n{body}\n=> {url_prefix}/index.gmi Back to all posts\n"
     )
 }
 
+fn normalize_url_prefix(prefix: &str) -> String {
+    let trimmed = prefix.trim_matches('/');
+    if trimmed.is_empty() {
+        String::new()
+    } else {
+        format!("/{trimmed}")
+    }
+}
+
 /// Regenerate `/index.gmi`, listing every tracked post newest-first.
-fn write_index(out_dir: &std::path::Path, site_title: &str, manifest: &Manifest) -> Result<()> {
+fn write_index(
+    out_dir: &std::path::Path,
+    site_title: &str,
+    manifest: &Manifest,
+    url_prefix: &str,
+) -> Result<()> {
     let mut out = String::new();
     out.push_str(&format!("# {site_title}\n\n"));
     out.push_str("A Gemini mirror of the web blog, generated automatically.\n\n");
 
     for post in manifest.posts_by_recency() {
         let date = post.published.split('T').next().unwrap_or(&post.published);
-        out.push_str(&format!("=> /{} {date} - {}\n", post.gmi_path, post.title));
+        out.push_str(&format!(
+            "=> {url_prefix}/{} {date} - {}\n",
+            post.gmi_path, post.title
+        ));
     }
 
     let index_path = out_dir.join("index.gmi");
@@ -146,4 +180,21 @@ fn write_index(out_dir: &std::path::Path, site_title: &str, manifest: &Manifest)
         .with_context(|| format!("writing {}", index_path.display()))?;
     println!("  wrote {}", index_path.display());
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{normalize_url_prefix, render_post_page};
+
+    #[test]
+    fn normalizes_url_prefix_for_root_and_subdirectory() {
+        assert_eq!(normalize_url_prefix("/blog/"), "/blog");
+        assert_eq!(normalize_url_prefix("/"), "");
+    }
+
+    #[test]
+    fn generated_post_backlinks_to_prefixed_index() {
+        let page = render_post_page("Title", "2026-10-01T00:00:00Z", "Body", "/blog");
+        assert!(page.ends_with("=> /blog/index.gmi Back to all posts\n"));
+    }
 }
