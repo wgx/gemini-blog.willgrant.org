@@ -14,8 +14,8 @@ GitHub Actions (schedule/manual)
    │
   ├─▶ git commit + push  (manifest.json + generated blog/ files)
    │
-  └─▶ fly deploy  ── builds the Docker image (the generic `server`
-                binary + blog/ content) and ships it to Fly.io
+     └─▶ Fly.io auto-deploys from `main`, building the Docker image
+       (generic `server` binary + generated blog/ content)
                               │
                               ▼
                     server (always running on Fly, sleeps when idle)
@@ -89,12 +89,10 @@ cargo test -p cli
 ## One-time setup on Fly.io
 
 1. `fly launch --no-deploy` (or hand-edit the app name in `fly.toml` -
-   it must be globally unique on Fly).
-2. `fly secrets set FLY_API_TOKEN=...` isn't a thing you set on the app
-   itself - instead, create a deploy token (`fly tokens create deploy`)
-   and add it as the `FLY_API_TOKEN` secret on the **GitHub repo**
-   (Settings → Secrets and variables → Actions), for
-    `.github/workflows/sync-and-deploy.yml` to use.
+  it must be globally unique on Fly).
+2. Configure Fly.io to auto-deploy this app from the `main` branch.
+  The GitHub Actions workflow commits generated Gemtext to `main`; that
+  commit triggers the Fly deployment.
 3. Optional but recommended: generate a real cert/key pair once (so the
    Gemini TLS certificate is stable across restarts, rather than a fresh
    self-signed one every deploy) and store them as `fly secrets set
@@ -102,8 +100,8 @@ cargo test -p cli
    server just generates a transient self-signed certificate on boot,
    which is spec-compliant but means repeat visitors' Gemini clients
    will see the pinned certificate change occasionally.
-4. Push to the default branch, or run the "Sync blog to Gemini and
-   deploy" workflow manually from the Actions tab.
+4. Push to `main`, or run the "Sync blog to Gemini" workflow manually
+  from the Actions tab.
 
 ## Known simplifications / things to revisit
 

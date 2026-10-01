@@ -1,4 +1,4 @@
-name: Sync blog to Gemini and deploy
+name: Sync blog to Gemini
 
 on:
   schedule:
@@ -19,7 +19,7 @@ permissions:
   contents: write
 
 jobs:
-  sync-and-deploy:
+  sync-blog:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
@@ -54,9 +54,6 @@ jobs:
             git push
           fi
 
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+# Fly.io watches main and builds/deploys after the generated commit is pushed.
+# End of workflow.
 
-      - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
