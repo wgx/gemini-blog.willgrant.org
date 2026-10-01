@@ -1,0 +1,14 @@
+# Blog posts by Will Grant (Gemini mirror)
+
+A Gemini mirror of the web blog, generated automatically.
+
+=> /blog/posts/2026-07-23-the-hardest-way-to-make-gif.gmi 2026-07-23 - The Hardest Way to Make a GIF
+=> /blog/posts/2025-03-26-how-to-get-your-first-job-in-ux.gmi 2025-03-26 - How to Get Your First Job in UX: A Guide
+=> /blog/posts/2025-02-06-how-software-engineering-leaders-can-harness-generative-ai-to-enhance-user-experience.gmi 2025-02-06 - How Software Engineering Leaders Can Harness Generative AI to Enhance User Experience
+=> /blog/posts/2025-01-05-stopify-my-own-diy-music-streaming-service.gmi 2025-01-05 - Stopify - my own DIY music streaming service
+=> /blog/posts/2025-01-02-humblebrag.gmi 2025-01-02 - This is a complete #humblebrag but I’m ok with that
+=> /blog/posts/2025-01-01-are-you-planning-on-ai.gmi 2025-01-01 - Are you planning to pre-emptively integrate AI-powered features into your software?
+=> /blog/posts/2024-04-09-stretching-the-user-centered-design-going-to-the-gym-metaphor-to-breaking-point.gmi 2024-04-09 - Stretching the User-Centered Design / Going to the Gym Metaphor to Breaking Point
+=> /blog/posts/2024-03-28-ui-ux-cx-service-design-defined-with-analogies.gmi 2024-03-28 - UI, UX, CX, Service Design, defined with analogies
+=> /blog/posts/2023-12-13-ux-of-unretirement-digital-products-workplaces.gmi 2023-12-13 - The UX of Unretirement: Implications for User Experience (UX) in Digital Products and Workplaces
+=> /blog/posts/2023-11-27-strategies-for-successful-user-interface-migrations.gmi 2023-11-27 - Strategies for Successful User Interface Migrations
