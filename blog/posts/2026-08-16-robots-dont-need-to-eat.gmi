@@ -1,0 +1,52 @@
+# Robots Don’t Need to Eat
+
+Published: 2026-08-16
+
+At the bottom of everything happening in the world right now, one fundamental truth doesn’t change: we all need to eat.
+
+Unless you’re in a position to grow your own food, you have to buy it. And to get the money for that food, we sell our labour. We buy other things too, of course - iPhones, dog treats, and underpants - but food always comes first.
+
+This trade forms the absolute base of our economy. Bin collectors, brain surgeons, and hedge fund managers alike - we all trade our time for cash. We spend that money at the supermarket, which pays the farmers, the lorry drivers, and the shop staff. Those workers then go and buy their own food. Everyone contributes value, gets paid, and survives.
+
+Now, artificial intelligence threatens to break that chain - and potentially in an irreversible way.
+
+## Dead End
+
+Businesses exist to make money. Human workers are expensive: they get sick, take holidays, and make mistakes. Machines do not. As AI grows smarter and cheaper, companies will naturally hire fewer people. That saves money for the business in the short term, but it removes money from the workforce.
+
+This creates a dead end. If millions of people lose their jobs to software and robots, where do they get the money for food? And if nobody has a wage, who buys the products and services that the machines produce?
+
+If we reach that tipping point, the whole economy stalls. Here are three ways this crisis could play out:
+
+## 1. The Handout State
+
+Governments could step in to keep the consumer market alive. The state taxes the companies that own the AI, then hands that cash back to citizens as a basic income . You then spend that money on robot-made food and goods, keeping the money moving.
+=> https://en.wikipedia.org/wiki/Universal_basic_income hands that cash back to citizens as a basic income
+
+On paper, this prevents starvation. In reality, it completely destroys human leverage. In the past, workers could unionise and strike if their employers treated them poorly. If machines are doing all the work, striking achieves nothing. You become entirely dependent on government payments. If politicians decide to cut your grant, or attach strict rules to it, you can’t walk away. You obey, or you starve.
+
+This scenario also relies on companies obeying the government and paying their taxes - and if they become powerful enough, they may simply decide not to.
+
+## 2. The Demand Death Spiral
+
+Governments fail to act in time (as they often do). Businesses keep cutting staff just to stay ahead of rivals.
+
+Each time a company fires workers, it cuts costs - but it also destroys a slice of its own customer base.
+
+Soon, nobody can afford to buy new cars, gadgets, or services. Sales collapse. To survive falling sales, companies lay off even more staff and rely even more heavily on machines. The economy eats itself.
+
+Businesses go bankrupt despite having free machine labour, simply because their customers have vanished. Supply chains rot, and cities fall into chaos.
+
+## 3. High-Tech Feudalism
+
+The small group of people who own the AI, the energy grids, and the land realise something: they don’t actually need the masses anymore.
+
+In the Middle Ages, lords needed peasants to farm wheat and fight in wars. An elite class with automated farm equipment, robotic factories, and drone security needs nothing from ordinary people. They don’t even need you to buy their goods - they can trade exclusively with other machine owners.
+
+Society splits into two worlds. Inside private, heavily guarded estates, the owners live in luxury. Outside the gates, billions of jobless humans scrape by, completely cut off from the advanced post-human economy.
+
+Public healthcare will wither, and emergency food relief will arrive late - or not at all. Facing severe poverty, people will stop having children. Hunger and untreated disease will quietly raise the death rate. Over a few generations, the human population will shrink to a fraction of its current size, leaving behind only the machine owners and the few staff they keep.
+
+We built our world around a simple deal: you work, you earn, and you eat. Robots don’t need to eat, and they will soon do the work better than you. If we do not rewrite that deal now, the ending will be written for us.
+
+=> /blog/index.gmi Back to all posts

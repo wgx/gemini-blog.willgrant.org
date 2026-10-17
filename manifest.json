@@ -90,6 +90,15 @@
       "updated": "2026-07-23T00:00:00+00:00",
       "published": "2026-07-23T00:00:00+00:00",
       "gmi_path": "posts/2026-07-23-the-hardest-way-to-make-gif.gmi"
+    },
+    "https://blog.willgrant.org/2026/08/16/robots-dont-need-to-eat": {
+      "id": "https://blog.willgrant.org/2026/08/16/robots-dont-need-to-eat",
+      "slug": "2026-08-16-robots-dont-need-to-eat",
+      "title": "Robots Don’t Need to Eat",
+      "source_url": "https://blog.willgrant.org/2026/08/16/robots-dont-need-to-eat.html",
+      "updated": "2026-08-16T00:00:00+00:00",
+      "published": "2026-08-16T00:00:00+00:00",
+      "gmi_path": "posts/2026-08-16-robots-dont-need-to-eat.gmi"
     }
   }
 }

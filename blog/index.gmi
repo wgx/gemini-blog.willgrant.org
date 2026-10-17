@@ -2,6 +2,7 @@
 
 A Gemini mirror of the web blog, generated automatically.
 
+=> /blog/posts/2026-08-16-robots-dont-need-to-eat.gmi 2026-08-16 - Robots Don’t Need to Eat
 => /blog/posts/2026-07-23-the-hardest-way-to-make-gif.gmi 2026-07-23 - The Hardest Way to Make a GIF
 => /blog/posts/2025-03-26-how-to-get-your-first-job-in-ux.gmi 2025-03-26 - How to Get Your First Job in UX: A Guide
 => /blog/posts/2025-02-06-how-software-engineering-leaders-can-harness-generative-ai-to-enhance-user-experience.gmi 2025-02-06 - How Software Engineering Leaders Can Harness Generative AI to Enhance User Experience
